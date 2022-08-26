@@ -169,8 +169,8 @@ export class MyApp{
 		this.ctx.fillStyle = "lightblue";
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-		this.cube.move();
-		this.cube.draw();
+		// this.cube.move();
+		// this.cube.draw();
 
 		this.balls.forEach(ball => {
 			ball.move();
