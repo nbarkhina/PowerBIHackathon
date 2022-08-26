@@ -34,6 +34,7 @@ import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInst
 import VisualObjectInstance = powerbi.VisualObjectInstance;
 import DataView = powerbi.DataView;
 import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
+import { MyApp } from './game';
 
 import { VisualSettings } from "./settings";
 export class Visual implements IVisual {
@@ -41,28 +42,39 @@ export class Visual implements IVisual {
     private updateCount: number;
     private settings: VisualSettings;
     private textNode: Text;
+    canvas:HTMLCanvasElement;
 
     constructor(options: VisualConstructorOptions) {
         console.log('Visual constructor', options);
         this.target = options.element;
         this.updateCount = 0;
+        // debugger;
         if (document) {
-            const new_p: HTMLElement = document.createElement("p");
-            new_p.appendChild(document.createTextNode("Update count:"));
-            const new_em: HTMLElement = document.createElement("em");
-            this.textNode = document.createTextNode(this.updateCount.toString());
-            new_em.appendChild(this.textNode);
-            new_p.appendChild(new_em);
-            this.target.appendChild(new_p);
+            // const new_p: HTMLElement = document.createElement("p");
+            // new_p.appendChild(document.createTextNode("Neil count:"));
+            // const new_em: HTMLElement = document.createElement("em");
+            // this.textNode = document.createTextNode(this.updateCount.toString());
+            // new_em.appendChild(this.textNode);
+            // new_p.appendChild(new_em);
+            let canvas: HTMLCanvasElement = document.createElement("canvas");
+            canvas.width = 640;
+            canvas.height = 480;
+            canvas.style.width = this.target.clientWidth + "px";
+            this.target.appendChild(canvas);
+
+            this.canvas = canvas;
+            let myGame = new MyApp(this.canvas);
+
         }
     }
 
     public update(options: VisualUpdateOptions) {
         this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
-        console.log('Visual update', options);
-        if (this.textNode) {
-            this.textNode.textContent = (this.updateCount++).toString();
-        }
+        // console.log('Visual update', options);
+        // if (this.textNode) {
+        //     this.textNode.textContent = (this.updateCount++).toString();
+        // }
+        this.canvas.style.width = this.target.clientWidth + "px";
     }
 
     private static parseSettings(dataView: DataView): VisualSettings {
