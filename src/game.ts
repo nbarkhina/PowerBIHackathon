@@ -1,13 +1,14 @@
 export class Ball{
 	x:number = 10;
 	y:number = 20;
-	radius:number = 10;
+    name:string = '';
+	radius:number = 40;
 	xMove:number = 3;
 	yMove:number = 5;
 	xBoundary:number = 0;
 	yBoundary:number = 0;
 	ctx:CanvasRenderingContext2D;
-	constructor(xBoundary:number,yBoundary:number,ctx:CanvasRenderingContext2D){
+	constructor(xBoundary:number,yBoundary:number,ctx:CanvasRenderingContext2D,name:string){
 		this.x = Math.floor(Math.random() * 100) + this.radius;
 		this.y = Math.floor(Math.random() * 100) + this.radius;
 		this.xMove = Math.floor(Math.random() * 10)+1;
@@ -15,6 +16,7 @@ export class Ball{
 		this.xBoundary = xBoundary;
 		this.yBoundary = yBoundary;
 		this.ctx = ctx;
+        this.name = name;
 	}
 
 	move(){
@@ -29,8 +31,15 @@ export class Ball{
 	draw(){
 		this.ctx.fillStyle = "green";
 		this.ctx.beginPath();
-		this.ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
+		this.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
 		this.ctx.fill();
+
+        this.ctx.font = "30px Arial";
+		this.ctx.fillStyle = "red";
+        if (this.name)
+        {
+            this.ctx.fillText(this.name, this.x, this.y);
+        }
 	}
 }
 
@@ -146,13 +155,16 @@ export class MyApp{
 	constructor(canvas){
 		this.canvas = canvas;
 		this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
-		let ball = new Ball(this.canvas.width, this.canvas.height,this.ctx);
-		this.balls.push(ball);
-		this.cube = new Cube(this.canvas.width, this.canvas.height,this.ctx);
+        this.addBall('');
+        this.cube = new Cube(this.canvas.width, this.canvas.height,this.ctx);
 		window.requestAnimationFrame(this.draw.bind(this));
 
         this.canvas.addEventListener('mousedown', this.mouseDown.bind(this,event))
 	}
+
+    addBall(name:string){
+		this.balls.push(new Ball(this.canvas.width, this.canvas.height, this.ctx,name));
+    }
 
 	
 	mouseDown(event) {
@@ -161,8 +173,17 @@ export class MyApp{
 		const y = event.clientY - rect.top
 		console.log("x: " + x + " y: " + y, event);
 
-		this.balls.push(new Ball(this.canvas.width, this.canvas.height, this.ctx));
+        this.addBall('');
 	}
+
+    updateData(data:string[]){
+        this.balls = [];
+
+        data.forEach(name => {
+            this.addBall(name);
+        });
+
+    }
 
 	draw(){
 		

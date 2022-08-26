@@ -43,6 +43,7 @@ export class Visual implements IVisual {
     private settings: VisualSettings;
     private textNode: Text;
     canvas:HTMLCanvasElement;
+    myGame:MyApp;
 
     constructor(options: VisualConstructorOptions) {
         console.log('Visual constructor', options);
@@ -63,18 +64,45 @@ export class Visual implements IVisual {
             this.target.appendChild(canvas);
 
             this.canvas = canvas;
-            let myGame = new MyApp(this.canvas);
+            this.myGame = new MyApp(this.canvas);
 
         }
     }
 
     public update(options: VisualUpdateOptions) {
         this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
+        // debugger;
         // console.log('Visual update', options);
         // if (this.textNode) {
         //     this.textNode.textContent = (this.updateCount++).toString();
         // }
+
+        this.parseData(options);
+
+
         this.canvas.style.width = this.target.clientWidth + "px";
+    }
+
+    private parseData(options: VisualUpdateOptions){
+        try
+        {
+            let dataViews = options.dataViews;
+    
+            if (!dataViews
+                || !dataViews[0]
+                || !dataViews[0].categorical
+                || !dataViews[0].categorical.categories
+                || !dataViews[0].categorical.categories[0].values)
+                return;
+    
+            let categorical = dataViews[0].categorical;
+            let values = categorical.categories[0].values;
+            if (values.length > 0)
+            {
+                console.log('values', values);
+                this.myGame.updateData(values as string[]);
+            }
+        }catch(err){}
     }
 
     private static parseSettings(dataView: DataView): VisualSettings {
