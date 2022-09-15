@@ -65,7 +65,7 @@ export class Visual implements IVisual {
 
             this.canvas = canvas;
             this.myGame = new MyApp(this.canvas);
-
+            this.myGame.loadData();
         }
     }
 
@@ -81,6 +81,7 @@ export class Visual implements IVisual {
 
 
         this.canvas.style.width = this.target.clientWidth + "px";
+        // this.canvas.style.height = this.target.clientHeight + "px";
     }
 
     private parseData(options: VisualUpdateOptions){
