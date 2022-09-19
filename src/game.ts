@@ -259,36 +259,5 @@ export class MyApp{
 	}
 
 
-    //for debugging rotation
-    debugRotation(){
-        
-        let x = 300;
-        let y = 300;
-
-        this.ctx.fillStyle = "red";
-        this.ctx.beginPath();
-        this.ctx.arc(x, y, 20, 0, 2 * Math.PI);
-        this.ctx.fill();
-
-
-        let width = 100;
-        let height = this.mario.height * (width/this.mario.width);
-        let x2 = x + width;
-        let y2 = y + height;
-        this.drawLine(x,y,x,y2);
-        this.drawLine(x,y,x2,y);
-        this.drawLine(x2,y,x2,y2);
-        this.drawLine(x,y2,x2,y2);
-        this.mario.draw(x,y,width);
-
-        
-        this.mario.drawAndRotate(300,300,this.angle,100)
-
-        this.mario.draw(100,100);
-        this.mario.drawAndRotate(100,100,this.angle)
-        
-    }
-
-
 	
 }
