@@ -101,6 +101,13 @@ export class Visual implements IVisual {
             if (values.length > 0)
             {
                 console.log('values', values);
+
+                //prevent too much data from entering the visual
+                if (values.length > 10)
+                {
+                    values = values.slice(0,10);
+                }
+
                 this.myGame.updateData(values as string[]);
             }
         }catch(err){}
